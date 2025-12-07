@@ -2,7 +2,7 @@
 
 #include<glad/glad.h>
 
-class vertex_buffer_object;
+#include <vector>
 
 class gl_object
 {
@@ -24,15 +24,17 @@ template <typename T>
 class gl_buffer : public gl_object
 {
 public:
-    gl_buffer(GLenum target, T* data, GLsizeiptr size)
-        : m_target(target)
+    gl_buffer(const GLenum target) : m_target(target) {}
+    virtual ~gl_buffer() = default;
+
+    void init(const std::vector<T>& data)
     {
         glGenBuffers(1, &m_ID);
         glBindBuffer(m_target, m_ID);
-	    glBufferData(m_target, size, data, GL_STATIC_DRAW);
-    }
 
-    virtual ~gl_buffer() = default;
+        const auto size = static_cast<GLsizeiptr>(data.size() * sizeof(T));
+	    glBufferData(m_target, size, data.data(), GL_STATIC_DRAW);  
+    }
 
     void bind() const override
     {
@@ -57,18 +59,14 @@ protected:
 class vertex_buffer_object : public gl_buffer<GLfloat>
 {
 public:
-    vertex_buffer_object(GLfloat* data, GLsizeiptr size)
-        : gl_buffer{GL_ARRAY_BUFFER, data, size}
-    {}
+    vertex_buffer_object() : gl_buffer{GL_ARRAY_BUFFER} {}
 };
 
 // EBO
 class element_buffer_object : public gl_buffer<GLuint>
 {
 public:
-    element_buffer_object(GLuint* data, GLsizeiptr size)
-        : gl_buffer{GL_ELEMENT_ARRAY_BUFFER, data, size}
-    {}
+    element_buffer_object() : gl_buffer{GL_ELEMENT_ARRAY_BUFFER} {}
 };
 
 // VAO
