@@ -1,5 +1,6 @@
 // camera.h
 #pragma once
+
 #include <Eigen/Geometry>
 
 class camera

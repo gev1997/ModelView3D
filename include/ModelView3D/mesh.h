@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ModelView3D/model_loader.h"
+
 #include<glad/glad.h>
 
 #include <vector>
@@ -102,4 +104,81 @@ public:
     {
         glDeleteVertexArrays(1, &m_ID);
     }
+};
+
+class mesh
+{
+public:
+    mesh(raw_model::data data)
+    {
+        Eigen::Vector3d min = data.V.colwise().minCoeff();
+        Eigen::Vector3d max = data.V.colwise().maxCoeff();
+        Eigen::Vector3d center = (min + max) / 2.0;
+        double size = (max - min).maxCoeff();           // longest dimension
+
+        // Translate model to origin
+        for (int i = 0; i < data.V.rows(); ++i)
+            data.V.row(i) -= center.transpose();
+
+        // Now scale so that longest side = 2.0 units (perfect for camera at z = -3 to -5)
+        double scale = (size > 0.0001) ? 2.0 / size : 1.0;
+        for (int i = 0; i < data.V.rows(); ++i)
+        data.V.row(i) *= scale;
+
+        for (int f = 0; f < data.F.rows(); ++f)
+        {
+            Eigen::Vector3f n = (data.N.rows() == data.F.rows())
+                ? data.N.row(f).cast<float>()
+                : Eigen::Vector3f(0,1,0);
+
+            for (int j = 0; j < 3; ++j)
+            {
+                Eigen::Vector3f v = data.V.row(data.F(f,j)).cast<float>();
+
+                vertices.push_back(v.x()); vertices.push_back(v.y()); vertices.push_back(v.z());
+                vertices.push_back(n.x()); vertices.push_back(n.y()); vertices.push_back(n.z());
+            }
+            unsigned int base = (unsigned int)indices.size();
+            indices.push_back(base+0);
+            indices.push_back(base+1);
+            indices.push_back(base+2);
+        }
+
+        m_VAO.bind();
+        m_VBO.init(vertices);
+        m_EBO.init(indices);
+        m_EBO.bind();
+        m_VAO.link_vertex_buffer_object(m_VBO, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+        m_VAO.link_vertex_buffer_object(m_VBO, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+
+        m_VAO.unbind();
+        m_VBO.unbind();
+        m_EBO.unbind();
+    }
+
+    ~mesh() = default;
+    
+    void destroy()
+    {
+        m_VAO.destroy();
+        m_VBO.destroy();
+        m_EBO.destroy();
+    }
+
+    const vertex_array_object& get_VAO() const
+    {
+        return m_VAO;
+    }
+
+    std::size_t get_indices_size()
+    {
+        return indices.size();
+    }
+
+private:
+    vertex_array_object m_VAO;
+    vertex_buffer_object m_VBO;
+    element_buffer_object m_EBO;
+    std::vector<GLfloat> vertices;
+    std::vector<GLuint> indices;
 };
