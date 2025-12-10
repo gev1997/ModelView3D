@@ -8,19 +8,26 @@
 
 std::optional<raw_model::data> raw_model::loader::load(const fs::path& path)
 {
-    // TODO: empth and valid path check
-    data data;
-
-    std::ifstream input(path.string(), std::ios::binary);  // Binary mode for robustness with binary STLs
-    if (!input) {
-        std::cerr << "Failed to open 3D model: " << path << std::endl;
+    if (!fs::exists(path))
+    {
+        std::cerr << "Invalid 3D model path: " << path << std::endl;
         return std::nullopt;
     }
 
-    // Read STL
-    if (igl::readSTL(input, data.V, data.F, data.N))
-        return data;
+    std::ifstream input(path.string(), std::ios::binary);
+    if (!input)
+    {
+        std::cerr << "Failed to open 3D model: " << path << std::endl;
+        return std::nullopt;
+    }
+    
+    data data;
+    
+    if (!igl::readSTL(input, data.V, data.F, data.N))
+    {
+        std::cerr << "Failed to load 3D model" << std::endl;
+        return std::nullopt;
+    }
 
-    std::cerr << "Failed to load 3D model" << std::endl;
-    return std::nullopt;
+    return data;
 }
