@@ -1,7 +1,10 @@
-// camera.cpp
-#include "ModelView3D/camera.h"
-#include "ModelView3D/shader.h"  // your shader wrapper
-#include <iostream>
+// project
+#include "camera.h"
+#include "shader.h"
+
+// third party
+
+// std
 
 camera::camera()
 {

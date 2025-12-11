@@ -1,5 +1,9 @@
-#include "ModelView3D/shader.h"
+// project
+#include "shader.h"
 
+// third party
+
+// std
 #include <fstream>
 #include <sstream>
 

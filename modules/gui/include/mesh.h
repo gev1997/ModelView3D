@@ -1,9 +1,12 @@
 #pragma once
 
-#include "ModelView3D/model_loader.h"
+// project
+#include "raw_model.h"
 
+// third party
 #include <glad/glad.h>
 
+// std
 #include <vector>
 
 class gl_object

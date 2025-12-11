@@ -1,8 +1,12 @@
 #pragma once
 
+// project
 #include "camera.h"
 
+// third party
 #include <GLFW/glfw3.h>
+
+// std
 
 class viewer
 {

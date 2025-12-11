@@ -1,7 +1,11 @@
 #pragma once
 
+// project
+
+// third party
 #include <glad/glad.h>
 
+// std
 #include <filesystem>
 
 namespace fs = std::filesystem;

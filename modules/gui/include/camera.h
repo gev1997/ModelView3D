@@ -1,7 +1,11 @@
-// camera.h
 #pragma once
 
+// project
+
+// third party
 #include <Eigen/Geometry>
+
+// std
 
 class camera
 {

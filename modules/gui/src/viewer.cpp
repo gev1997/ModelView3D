@@ -1,6 +1,9 @@
-#pragma once
+// project
+#include "viewer.h"
 
-#include "ModelView3D/viewer.h"
+// third party
+
+// std
 
 viewer::viewer(GLFWwindow* window)
 {

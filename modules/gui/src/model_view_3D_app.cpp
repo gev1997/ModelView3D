@@ -1,9 +1,11 @@
-#include "ModelView3D/model_view_3D_app.h"
-#include "ModelView3D/model_loader.h"
+// project
+#include "model_view_3D_app.h"
 
+// third party
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+// std
 #include <iostream>
 #include <cassert>
 

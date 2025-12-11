@@ -1,8 +1,11 @@
-#include "ModelView3D/model_loader.h"
+// project
+#include "raw_model.h"
 
+// third party
 #include <igl/readSTL.h>
 #include <igl/readOBJ.h>
 
+// std
 #include <iostream>
 #include <fstream>
 
