@@ -1,6 +1,7 @@
 #pragma once
 
 // project
+#include "namespace_gui.h"
 #include "camera.h"
 
 // third party
@@ -8,7 +9,7 @@
 
 // std
 
-class viewer
+class gui::viewer // class eye?
 {
 public:
     viewer(GLFWwindow* window);

@@ -1,13 +1,14 @@
 #pragma once
 
 // project
+#include "namespace_gui.h"
 
 // third party
 #include <Eigen/Geometry>
 
 // std
 
-class camera
+class gui::camera
 {
 public:
     camera();
@@ -17,7 +18,7 @@ public:
     void process_mouse_scroll(float offset_y);
 
     // Call every frame before drawing
-    void update_uniforms(class shader_program* shader, const std::string& prefix = "");
+    void update_uniforms(shader_program* shader, const std::string& prefix = "");
 
     // Getters (rarely needed now)
     Eigen::Matrix4f get_view_matrix();

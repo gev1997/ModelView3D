@@ -9,7 +9,7 @@
 #include <iostream>
 #include <cassert>
 
-model_view_3D_app::~model_view_3D_app()
+gui::model_view_3D_app::~model_view_3D_app()
 {
 	assert(m_main_window);
 	assert(m_viewer);
@@ -22,7 +22,7 @@ model_view_3D_app::~model_view_3D_app()
 	glfwTerminate();
 }
 
-bool model_view_3D_app::init()
+bool gui::model_view_3D_app::init()
 {
 	assert(!m_main_window);
 
@@ -68,7 +68,7 @@ bool model_view_3D_app::init()
 	return true;
 }
 
-bool model_view_3D_app::load_model(const fs::path& path)
+bool gui::model_view_3D_app::load_model(const fs::path& path)
 {
 	raw_model::loader model_loader;
 	const auto data = model_loader.load(path);
@@ -81,7 +81,7 @@ bool model_view_3D_app::load_model(const fs::path& path)
 	return true;
 }
 
-void model_view_3D_app::main_loop()
+void gui::model_view_3D_app::main_loop()
 {
 	assert(m_main_window);
 	assert(m_viewer);

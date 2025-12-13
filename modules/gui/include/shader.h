@@ -1,6 +1,7 @@
 #pragma once
 
 // project
+#include "namespace_gui.h"
 
 // third party
 #include <glad/glad.h>
@@ -10,7 +11,7 @@
 
 namespace fs = std::filesystem;
 
-class shader_base
+class gui::shader_base
 {
 public:
 	shader_base(int shader_ID, const fs::path& path);
@@ -25,21 +26,21 @@ private:
 	GLuint m_shader;
 };
 
-class vertex_shader : public shader_base
+class gui::vertex_shader : public shader_base
 {
 public:
 	vertex_shader(const fs::path& path);
 	virtual ~vertex_shader() = default;
 };
 
-class fragment_shader : public shader_base
+class gui::fragment_shader : public shader_base
 {
 public:
 	fragment_shader(const fs::path& path);
 	virtual ~fragment_shader() = default;
 };
 
-class shader_program
+class gui::shader_program
 {
 public:
 	shader_program(const fs::path& shader_path);

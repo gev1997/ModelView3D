@@ -7,7 +7,7 @@
 
 int main()
 {
-	model_view_3D_app app;
+	gui::model_view_3D_app app;
 
 	if (!app.init())
 		return -1;

@@ -7,7 +7,7 @@
 #include <fstream>
 #include <sstream>
 
-shader_base::shader_base(int shader_ID, const fs::path& path)
+gui::shader_base::shader_base(int shader_ID, const fs::path& path)
 {
 	const auto shader_source = _get_shader_source(path);
 	const GLchar* shader_source_cstr = shader_source.c_str();
@@ -17,17 +17,17 @@ shader_base::shader_base(int shader_ID, const fs::path& path)
 	glCompileShader(m_shader);
 }
 
-shader_base::~shader_base()
+gui::shader_base::~shader_base()
 {
 	glDeleteShader(m_shader);
 }
 
-GLuint shader_base::get() const
+GLuint gui::shader_base::get() const
 {
 	return m_shader;
 }
 
-std::string shader_base::_get_shader_source(const fs::path& path)
+std::string gui::shader_base::_get_shader_source(const fs::path& path)
 {
 	std::ifstream file(path);
     if (!file)
@@ -39,15 +39,15 @@ std::string shader_base::_get_shader_source(const fs::path& path)
 	return stream.str();
 }
 
-vertex_shader::vertex_shader(const fs::path& path)
+gui::vertex_shader::vertex_shader(const fs::path& path)
 	: shader_base{GL_VERTEX_SHADER, path / "vertex.glsl"}
 {}
 
-fragment_shader::fragment_shader(const fs::path& path)
+gui::fragment_shader::fragment_shader(const fs::path& path)
 	: shader_base{GL_FRAGMENT_SHADER, path / "fragment.glsl"}
 {}
 
-shader_program::shader_program(const fs::path& path)
+gui::shader_program::shader_program(const fs::path& path)
 {
 	const fs::path shaders_path = "shaders" / path;
 	vertex_shader vertex_shader(shaders_path);
@@ -59,12 +59,12 @@ shader_program::shader_program(const fs::path& path)
 	glLinkProgram(m_program_ID);
 }
 
-shader_program::~shader_program()
+gui::shader_program::~shader_program()
 {
 	destroy();
 }
 
-void shader_program::attach() const
+void gui::shader_program::attach() const
 {
 	if (!m_program_ID)
 		return;
@@ -72,12 +72,12 @@ void shader_program::attach() const
 	glUseProgram(m_program_ID);
 }
 
-void shader_program::detach() const
+void gui::shader_program::detach() const
 {
     glUseProgram(0);
 }
 
-void shader_program::destroy()
+void gui::shader_program::destroy()
 {
 	if (!m_program_ID)
 		return;
@@ -86,12 +86,12 @@ void shader_program::destroy()
 	m_program_ID = 0;
 }
 
-GLuint shader_program::get() const
+GLuint gui::shader_program::get() const
 {
 	return m_program_ID;
 }
 
-void shader_program::set_matrix4(const std::string& name, const float* matrix) const {
+void gui::shader_program::set_matrix4(const std::string& name, const float* matrix) const {
 	const GLint location = glGetUniformLocation(m_program_ID, name.c_str());
 	glUniformMatrix4fv(location, 1, GL_FALSE, matrix);
 }

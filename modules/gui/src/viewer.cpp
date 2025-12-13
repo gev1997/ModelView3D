@@ -5,7 +5,7 @@
 
 // std
 
-viewer::viewer(GLFWwindow* window)
+gui::viewer::viewer(GLFWwindow* window)
 {
     assert(window);
 
@@ -15,12 +15,12 @@ viewer::viewer(GLFWwindow* window)
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
-camera& viewer::get_camera()
+gui::camera& gui::viewer::get_camera()
 {
     return m_camera;
 }
 
-void viewer::_mouse_callback(GLFWwindow* window, const double pos_x, const double pos_y)
+void gui::viewer::_mouse_callback(GLFWwindow* window, const double pos_x, const double pos_y)
 {
     assert(window); // maybe if (!window) ?
 
@@ -31,7 +31,7 @@ void viewer::_mouse_callback(GLFWwindow* window, const double pos_x, const doubl
     self->_handle_mouse(pos_x, pos_y);
 }
 
-void viewer::_scroll_callback(GLFWwindow* window, const double, const double offset_y)
+void gui::viewer::_scroll_callback(GLFWwindow* window, const double, const double offset_y)
 {
     assert(window); // maybe if (!window) ?
 
@@ -42,7 +42,7 @@ void viewer::_scroll_callback(GLFWwindow* window, const double, const double off
     self->_handle_scroll(offset_y);
 }
 
-void viewer::_handle_mouse(const double pos_x, const double pos_y)
+void gui::viewer::_handle_mouse(const double pos_x, const double pos_y)
 {
     if (m_first_mouse)
     {
@@ -60,7 +60,7 @@ void viewer::_handle_mouse(const double pos_x, const double pos_y)
     m_camera.process_mouse_movement(delta_x, delta_y);
 }
 
-void viewer::_handle_scroll(const double offset_y)
+void gui::viewer::_handle_scroll(const double offset_y)
 {
     m_camera.process_mouse_scroll(static_cast<float>(offset_y));
 }

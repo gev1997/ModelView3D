@@ -1,6 +1,7 @@
 #pragma once
 
 // project
+#include "namespace_gui.h"
 #include "mesh.h"
 #include "shader.h"
 #include "viewer.h"
@@ -9,7 +10,7 @@
 
 // std
 
-class model_view_3D_app
+class gui::model_view_3D_app
 {
 public:
 	model_view_3D_app() = default;

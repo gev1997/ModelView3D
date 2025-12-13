@@ -6,14 +6,14 @@
 
 // std
 
-camera::camera()
+gui::camera::camera()
 {
     // Good default orientation
     yaw   = 0.0f;
     pitch = 0.2f;
 }
 
-void camera::process_mouse_movement(float delta_x, float delta_y)
+void gui::camera::process_mouse_movement(float delta_x, float delta_y)
 {
     const float sensitivity = 0.005f;
     yaw   += delta_x * sensitivity;
@@ -24,13 +24,13 @@ void camera::process_mouse_movement(float delta_x, float delta_y)
     if (pitch < -max_pitch) pitch = -max_pitch;
 }
 
-void camera::process_mouse_scroll(float offset_y)
+void gui::camera::process_mouse_scroll(float offset_y)
 {
     radius -= offset_y * 0.5f;
     if (radius < 0.1f) radius = 0.1f;
 }
 
-Eigen::Vector3f camera::_spherical_to_cartesian() const
+Eigen::Vector3f gui::camera::_spherical_to_cartesian() const
 {
     float x = radius * std::cos(pitch) * std::sin(yaw);
     float y = radius * std::sin(pitch);
@@ -38,7 +38,7 @@ Eigen::Vector3f camera::_spherical_to_cartesian() const
     return {x, y, z};
 }
 
-Eigen::Matrix4f camera::get_view_matrix()
+Eigen::Matrix4f gui::camera::get_view_matrix()
 {
     Eigen::Vector3f eye    = target + _spherical_to_cartesian();
     Eigen::Vector3f center = target;
@@ -59,7 +59,7 @@ Eigen::Matrix4f camera::get_view_matrix()
     return view;
 }
 
-Eigen::Matrix4f camera::get_projection_matrix()
+Eigen::Matrix4f gui::camera::get_projection_matrix()
 {
     float tanHalfFov = std::tan(fov * 0.008726646f);  // deg → rad / 2
     Eigen::Matrix4f proj = Eigen::Matrix4f::Zero();
@@ -73,7 +73,7 @@ Eigen::Matrix4f camera::get_projection_matrix()
     return proj;
 }
 
-Eigen::Matrix4f camera::get_model_matrix()
+Eigen::Matrix4f gui::camera::get_model_matrix()
 {
     Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
     if (auto_spin) {
@@ -84,7 +84,7 @@ Eigen::Matrix4f camera::get_model_matrix()
     return model;
 }
 
-void camera::update_uniforms(shader_program* shader, const std::string& prefix)
+void gui::camera::update_uniforms(shader_program* shader, const std::string& prefix)
 {
     shader->set_matrix4((prefix + "model").c_str(),      get_model_matrix().data());
     shader->set_matrix4((prefix + "view").c_str(),       get_view_matrix().data());

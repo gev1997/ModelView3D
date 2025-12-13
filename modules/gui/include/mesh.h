@@ -1,6 +1,7 @@
 #pragma once
 
 // project
+#include "namespace_gui.h"
 #include "raw_model.h"
 
 // third party
@@ -9,7 +10,7 @@
 // std
 #include <vector>
 
-class gl_object
+class gui::gl_object
 {
 public:
     gl_object() = default;
@@ -26,7 +27,7 @@ protected:
 };
 
 template <typename T>
-class gl_buffer : public gl_object
+class gui::gl_buffer : public gl_object
 {
 public:
     gl_buffer(const GLenum target) : m_target(target) {}
@@ -61,21 +62,21 @@ protected:
 };
 
 // VBO
-class vertex_buffer_object : public gl_buffer<GLfloat>
+class gui::vertex_buffer_object : public gl_buffer<GLfloat>
 {
 public:
     vertex_buffer_object() : gl_buffer{GL_ARRAY_BUFFER} {}
 };
 
 // EBO
-class element_buffer_object : public gl_buffer<GLuint>
+class gui::element_buffer_object : public gl_buffer<GLuint>
 {
 public:
     element_buffer_object() : gl_buffer{GL_ELEMENT_ARRAY_BUFFER} {}
 };
 
 // VAO
-class vertex_array_object : public gl_object
+class gui::vertex_array_object : public gl_object
 {
 public:
     vertex_array_object()
@@ -109,7 +110,7 @@ public:
     }
 };
 
-class mesh
+class gui::mesh
 {
 public:
     mesh(raw_model::data data)
