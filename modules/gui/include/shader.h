@@ -50,7 +50,7 @@ public:
 	void detach() const;
 	void destroy();
 	GLuint get() const;
-	void set_matrix4(const std::string& name, const float* mat) const;
+	void set_matrix4(const std::string& name, const float* matrix) const;
 	
 private:
 	GLuint m_program_ID = 0;

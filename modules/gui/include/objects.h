@@ -29,7 +29,7 @@ template <typename T>
 class gui::gl_buffer : public gl_object
 {
 public:
-    gl_buffer(const GLenum target) : m_target(target) {}
+    gl_buffer(GLenum target) : m_target(target) {}
     virtual ~gl_buffer() = default;
 
     void init(const std::vector<T>& data)
