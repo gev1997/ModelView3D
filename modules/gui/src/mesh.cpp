@@ -7,32 +7,34 @@
 
 gui::mesh::mesh(raw_model::data data)
 {
-    Eigen::Vector3d min = data.V.colwise().minCoeff();
-    Eigen::Vector3d max = data.V.colwise().maxCoeff();
+    auto& vertices = data.V;
+    auto& faces = data.F;
+    auto& normals = data.N;
+
+    Eigen::Vector3d min = vertices.colwise().minCoeff();
+    Eigen::Vector3d max = vertices.colwise().maxCoeff();
     Eigen::Vector3d center = (min + max) / 2.0;
-    const double size = (max - min).maxCoeff();           // longest dimension
-
-    // Translate model to origin
-    for (int i = 0; i < data.V.rows(); ++i)
-        data.V.row(i) -= center.transpose();
-
-    // Now scale so that longest side = 2.0 units (perfect for camera at z = -3 to -5)
+    const double size = (max - min).maxCoeff();
     const double scale = (size > 0.0001) ? 2.0 / size : 1.0;
-    for (int i = 0; i < data.V.rows(); ++i)
-        data.V.row(i) *= scale;
 
-    for (int f = 0; f < data.F.rows(); ++f)
+    for (int i = 0; i < vertices.rows(); ++i)
     {
-        Eigen::Vector3f n = (data.N.rows() == data.F.rows())
-                            ? data.N.row(f).cast<GLfloat>()
-                            : Eigen::Vector3f(0,1,0);
+        vertices.row(i) -= center.transpose();
+        vertices.row(i) *= scale;
+    }
+
+    for (int f = 0; f < faces.rows(); ++f)
+    {
+        const Eigen::Vector3f normal = (normals.rows() == faces.rows())
+                                       ? normals.row(f).cast<GLfloat>() // per-face
+                                       : Eigen::Vector3f(0,1,0);        // per-vertex
 
         for (int j = 0; j < 3; ++j)
         {
-            const Eigen::Vector3f v = data.V.row(data.F(f,j)).cast<GLfloat>();
+            const Eigen::Vector3f vertex = vertices.row(faces(f,j)).cast<GLfloat>();
 
-            m_vertices.push_back(v.x()); m_vertices.push_back(v.y()); m_vertices.push_back(v.z());
-            m_vertices.push_back(n.x()); m_vertices.push_back(n.y()); m_vertices.push_back(n.z());
+            m_vertices.insert(m_vertices.end(), {vertex.x(), vertex.y(), vertex.z()});
+            m_vertices.insert(m_vertices.end(), {normal.x(), normal.y(), normal.z()});
         }
 
         const auto base = static_cast<GLuint>(m_indices.size());
