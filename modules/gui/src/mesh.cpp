@@ -4,6 +4,7 @@
 // third party
 
 // std
+#include <numeric>
 
 gui::mesh::mesh(raw_model::data data)
 {
@@ -36,12 +37,10 @@ gui::mesh::mesh(raw_model::data data)
             m_vertices.insert(m_vertices.end(), {vertex.x(), vertex.y(), vertex.z()});
             m_vertices.insert(m_vertices.end(), {normal.x(), normal.y(), normal.z()});
         }
-
-        const auto base = static_cast<GLuint>(m_indices.size());
-        m_indices.push_back(base + 0);
-        m_indices.push_back(base + 1);
-        m_indices.push_back(base + 2);
     }
+
+    m_indices = std::vector<GLuint>(faces.size());
+    std::iota(m_indices.begin(), m_indices.end(), 0);
 
     m_VAO.bind();
     m_VBO.init(m_vertices);
