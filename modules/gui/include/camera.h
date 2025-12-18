@@ -2,6 +2,7 @@
 
 // project
 #include "namespace_gui.h"
+#include "shader.h"
 
 // third party
 #include <Eigen/Geometry>
@@ -11,16 +12,11 @@
 class gui::camera
 {
 public:
-    camera();
+    camera() = default;
 
-    // Input
     void process_mouse_movement(float delta_x, float delta_y);
     void process_mouse_scroll(float offset_y);
-
-    // Call every frame before drawing
-    void update_uniforms(shader_program* shader, const std::string& prefix = "");
-
-    // Getters (rarely needed now)
+    void update_uniforms(shader_program* shader);
     Eigen::Matrix4f get_view_matrix();
     Eigen::Matrix4f get_projection_matrix();
     Eigen::Matrix4f get_model_matrix();
@@ -30,18 +26,20 @@ private:
 
 private:
     // Camera state (orbit around target)
-    Eigen::Vector3f target = Eigen::Vector3f::Zero();
-    float radius = 5.0f;
-    float yaw    = 0.0f;
-    float pitch  = 0.0f;
-
-    // Projection settings
-    float fov    = 45.0f;
-    float aspect = 800.0f / 600.0f;
-    float z_near = 0.1f;
-    float z_far  = 100.0f;
+    Eigen::Vector3f m_target = Eigen::Vector3f::Zero();
+    float m_radius = 5.0f;
+    float m_yaw = 0.0f;
+    float m_pitch = 0.0f;
 
     // Model rotation (optional spinning)
-    float model_angle = 0.0f;
-    bool  auto_spin   = true;
+    float m_model_angle = 0.0f;
+    bool m_auto_spin = true;
+
+    // predefined values
+    static constexpr float sensitivity = 0.005f;
+    static constexpr float max_pitch = 1.57f;  // ~89 degrees
+    static constexpr float field_of_view = 45.0f;
+    static constexpr float aspect = 800.0f / 600.0f;
+    static constexpr float z_near = 0.1f;
+    static constexpr float z_far = 100.0f;
 };
