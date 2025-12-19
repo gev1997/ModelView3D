@@ -91,7 +91,14 @@ GLuint gui::shader_program::get() const
 	return m_program_ID;
 }
 
-void gui::shader_program::set_matrix4(const std::string& name, const float* matrix) const {
+void gui::shader_program::set_vec3(const std::string& name, const Eigen::Vector3f& vec3) const
+{
+    const GLint location = glGetUniformLocation(m_program_ID, name.c_str());
+	glUniform3fv(location, 1, vec3.data());
+}
+
+void gui::shader_program::set_matrix4(const std::string& name, const Eigen::Matrix4f& mat4) const
+{
 	const GLint location = glGetUniformLocation(m_program_ID, name.c_str());
-	glUniformMatrix4fv(location, 1, GL_FALSE, matrix);
+	glUniformMatrix4fv(location, 1, GL_FALSE, mat4.data());
 }

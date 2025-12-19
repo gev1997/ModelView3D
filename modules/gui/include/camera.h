@@ -16,17 +16,13 @@ public:
 
     void process_mouse_movement(float delta_x, float delta_y);
     void process_mouse_scroll(float offset_y);
-    void update_uniforms(shader_program* shader);
+    Eigen::Vector3f get_position() const;
     Eigen::Matrix4f get_view_matrix();
     Eigen::Matrix4f get_projection_matrix();
     Eigen::Matrix4f get_model_matrix();
 
 private:
-    Eigen::Vector3f _spherical_to_cartesian() const;
-
-private:
     // Camera state (orbit around target)
-    Eigen::Vector3f m_target = Eigen::Vector3f::Zero();
     float m_radius = 5.0f;
     float m_yaw = 0.0f;
     float m_pitch = 0.0f;

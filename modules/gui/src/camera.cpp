@@ -23,18 +23,19 @@ void gui::camera::process_mouse_scroll(float offset_y)
         m_radius = 0.1f;
 }
 
-Eigen::Vector3f gui::camera::_spherical_to_cartesian() const
+Eigen::Vector3f gui::camera::get_position() const
 {
     const float x = m_radius * std::cos(m_pitch) * std::sin(m_yaw);
     const float y = m_radius * std::sin(m_pitch);
     const float z = m_radius * std::cos(m_pitch) * std::cos(m_yaw);
-    return {x, y, z};
+
+    return Eigen::Vector3f::Zero() + Eigen::Vector3f{x, y, z};
 }
 
 Eigen::Matrix4f gui::camera::get_view_matrix()
 {
-    Eigen::Vector3f center = m_target;
-    Eigen::Vector3f eye = center + _spherical_to_cartesian();
+    Eigen::Vector3f eye = get_position();
+    Eigen::Vector3f center = Eigen::Vector3f::Zero();
     Eigen::Vector3f up = Eigen::Vector3f(0,1,0);
 
     Eigen::Vector3f f = (center - eye).normalized();
@@ -78,11 +79,4 @@ Eigen::Matrix4f gui::camera::get_model_matrix()
     model.block<3,3>(0,0) = rotation.toRotationMatrix();
 
     return model;
-}
-
-void gui::camera::update_uniforms(shader_program* shader)
-{
-    shader->set_matrix4("model", get_model_matrix().data());
-    shader->set_matrix4("view", get_view_matrix().data());
-    shader->set_matrix4("projection", get_projection_matrix().data());
 }

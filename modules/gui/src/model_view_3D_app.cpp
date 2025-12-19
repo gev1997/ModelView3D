@@ -91,6 +91,7 @@ void gui::model_view_3D_app::main_loop()
 	m_shader_program->attach();
 	m_mesh->get_VAO().bind();
 	
+	auto& camera = m_viewer->get_camera();
 	const auto indices_size = m_mesh->get_indices_size();
 	
 	while (!glfwWindowShouldClose(m_main_window))
@@ -98,7 +99,14 @@ void gui::model_view_3D_app::main_loop()
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		m_viewer->get_camera().update_uniforms(m_shader_program.get());
+		m_shader_program->set_vec3("lightPos",  {2.0f, 2.0f, 2.0f});
+		m_shader_program->set_vec3("viewPos",   camera.get_position());
+		m_shader_program->set_vec3("objectColor", {0.8f, 0.8f, 0.8f});
+
+		m_shader_program->set_matrix4("model", camera.get_model_matrix());
+		m_shader_program->set_matrix4("view", camera.get_view_matrix());
+		m_shader_program->set_matrix4("projection", camera.get_projection_matrix());
+
 		glDrawElements(GL_TRIANGLES, indices_size, GL_UNSIGNED_INT, nullptr);
 
 		glfwSwapBuffers(m_main_window);

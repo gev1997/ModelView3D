@@ -4,6 +4,7 @@
 #include "namespace_gui.h"
 
 // third party
+#include <Eigen/Geometry>
 #include <glad/glad.h>
 
 // std
@@ -50,7 +51,8 @@ public:
 	void detach() const;
 	void destroy();
 	GLuint get() const;
-	void set_matrix4(const std::string& name, const float* matrix) const;
+	void set_vec3(const std::string& name, const Eigen::Vector3f& vec3) const;
+	void set_matrix4(const std::string& name, const Eigen::Matrix4f& mat4) const;
 	
 private:
 	GLuint m_program_ID = 0;

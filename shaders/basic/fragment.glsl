@@ -3,9 +3,22 @@ out vec4 FragColor;
 
 in vec3 Normal;
 in vec3 FragPos;
+uniform vec3 lightPos;
+uniform vec3 viewPos;
+uniform vec3 objectColor;
 
 void main()
 {
-    // Super simple unlit bright magenta
-    FragColor = vec4(1.0, 0.3, 0.3, 1.0);
+    // Ambient
+    float ambientStrength = 0.2;
+    vec3 ambient = ambientStrength * objectColor;
+
+    // Diffuse
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(lightPos - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * objectColor;
+
+    vec3 result = ambient + diffuse;
+    FragColor = vec4(result, 1.0);
 }
