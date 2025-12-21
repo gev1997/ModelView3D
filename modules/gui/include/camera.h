@@ -14,7 +14,7 @@ class gui::camera
 public:
     camera() = default;
 
-    void process_mouse_movement(float delta_x, float delta_y);
+    void process_mouse_move(float delta_x, float delta_y);
     void process_mouse_scroll(float offset_y);
     Eigen::Vector3f get_position() const;
     Eigen::Matrix4f get_view_matrix();
@@ -29,7 +29,7 @@ private:
 
     // Model rotation (optional spinning)
     float m_model_angle = 0.0f;
-    bool m_auto_spin = true;
+    bool m_auto_spin = false;
 
     // predefined values
     static constexpr float sensitivity = 0.005f;

@@ -5,7 +5,7 @@
 
 // std
 
-void gui::camera::process_mouse_movement(float delta_x, float delta_y)
+void gui::camera::process_mouse_move(float delta_x, float delta_y)
 {
     m_yaw += delta_x * sensitivity;
     m_pitch += delta_y * sensitivity;
