@@ -8,8 +8,8 @@
 
 void gui::camera::process_mouse_move(float delta_x, float delta_y)
 {
-    m_yaw += delta_x * sensitivity;
-    m_pitch += delta_y * sensitivity;
+    m_yaw += delta_x * mouse_move_sensitivity;
+    m_pitch -= delta_y * mouse_move_sensitivity;
 
     if (m_yaw > 2.0f * M_PI) m_yaw -= 2.0f * M_PI;
     if (m_yaw < 0.0f) m_yaw += 2.0f * M_PI;
