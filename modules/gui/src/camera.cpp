@@ -19,7 +19,7 @@ void gui::camera::process_mouse_move(float delta_x, float delta_y)
 
 void gui::camera::process_mouse_scroll(float offset_y)
 {
-    m_radius -= offset_y * 0.5f;
+    m_radius -= offset_y * mouse_zoom_sensitivity;
     if (m_radius < 0.1f)
         m_radius = 0.1f;
 }
