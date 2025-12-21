@@ -4,16 +4,17 @@
 // third party
 
 // std
+#include <cmath>
 
 void gui::camera::process_mouse_move(float delta_x, float delta_y)
 {
     m_yaw += delta_x * sensitivity;
     m_pitch += delta_y * sensitivity;
 
-    if (m_pitch > max_pitch)
-        m_pitch = max_pitch;
-    if (m_pitch < -max_pitch)
-        m_pitch = -max_pitch;
+    if (m_yaw > 2.0f * M_PI) m_yaw -= 2.0f * M_PI;
+    if (m_yaw < 0.0f) m_yaw += 2.0f * M_PI;
+    if (m_pitch > max_pitch) m_pitch = max_pitch;
+    if (m_pitch < -max_pitch) m_pitch = -max_pitch;
 }
 
 void gui::camera::process_mouse_scroll(float offset_y)
@@ -29,18 +30,18 @@ Eigen::Vector3f gui::camera::get_position() const
     const float y = m_radius * std::sin(m_pitch);
     const float z = m_radius * std::cos(m_pitch) * std::cos(m_yaw);
 
-    return Eigen::Vector3f::Zero() + Eigen::Vector3f{x, y, z};
+    return {x, y, z};
 }
 
 Eigen::Matrix4f gui::camera::get_view_matrix()
 {
     Eigen::Vector3f eye = get_position();
     Eigen::Vector3f center = Eigen::Vector3f::Zero();
-    Eigen::Vector3f up = Eigen::Vector3f(0,1,0);
+    Eigen::Vector3f world_up = Eigen::Vector3f::UnitY();
 
     Eigen::Vector3f f = (center - eye).normalized();
-    Eigen::Vector3f s = f.cross(up).normalized();
-    Eigen::Vector3f u = s.cross(f);
+    Eigen::Vector3f s = f.cross(world_up).normalized();
+    Eigen::Vector3f u = s.cross(f).normalized();
 
     Eigen::Matrix4f view = Eigen::Matrix4f::Identity();
     view.block<1,3>(0,0) = s.transpose();

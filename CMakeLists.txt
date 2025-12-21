@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+add_compile_definitions(_USE_MATH_DEFINES)
+
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/modules/gui/include
     ${CMAKE_CURRENT_SOURCE_DIR}/modules/raw_model/include

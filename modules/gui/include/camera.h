@@ -33,7 +33,7 @@ private:
 
     // predefined values
     static constexpr float sensitivity = 0.005f;
-    static constexpr float max_pitch = 1.57f;  // ~89 degrees
+    static constexpr float max_pitch = 1.57f;  // ~89 degrees (To avoid gimbal lock and camera flip)
     static constexpr float field_of_view = 45.0f;
     static constexpr float aspect = 800.0f / 600.0f;
     static constexpr float z_near = 0.1f;
